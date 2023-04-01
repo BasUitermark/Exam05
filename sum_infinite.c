@@ -43,40 +43,39 @@ int	ft_strlen(char *str)
 	return (i);
 }
 
+void swap(char **str1, char **str2)
+{
+	char *temp = *str1;
+	*str1 = *str2;
+	*str2 = temp;
+}
+
 void	sum_infinite(t_list **data, char *str1, char *str2)
 {
-	bool	add = false;
-	bool	neg = false;
-	int		n1;
-	int		n2;
-	int		len1 = ft_strlen(str1) - 1;
-	int 	len2 = ft_strlen(str2) - 1;
+	int		n;
+	int		carry = 0;
+	int		len1 = ft_strlen(str1);
+	int 	len2 = ft_strlen(str2);
 
-	if (str1[0] == '-' || str2[0] == '-')
-		neg = true;
-	while (len1 >= 0 && len2 >= 0 )
+	if (len1 > len2)
+		swap(&str1, &str2);
+	len1 = ft_strlen(str1);
+	len2 = ft_strlen(str2);
+	for (int i = len1 - 1; i >= 0; i--)
 	{
-		n1 = str1[len1] - '0';
-		n2 = str2[len2] - '0';
-		// if (neg)
-		// 	n1 *= -1;
-		n1 += n2;
-		if (add)
-		{
-			n1 += 1;
-			add = false;
-		}
-		if (n1 > 9)
-		{
-			n1 = n1 % 10;
-			add = true;
-		}
-		add_front(data, lstnew(n1 + '0'));
-		len1--;
-		len2--;
+		n = (str1[i] - '0') + (str2[i + (len2 - len1)] - '0') + carry;
+		carry += n / 10;
+		add_front(data, lstnew(n % 10 + '0'));
 	}
-	if (add)
-		add_front(data, lstnew('1'));
+	for (int i = len2 - len1 -1; i >= 0; i--)
+	{
+		n = str2[i] - '0' + carry;
+		carry += n / 10;
+		add_front(data, lstnew(n % 10 + '0'));
+	}
+	if (carry)
+		add_front(data, lstnew(carry + '0'));
+
 }
 
 int main(int argc, char *argv[])
