@@ -32,6 +32,19 @@ void add_front(t_list **lst, t_list *new_item)
 	*lst = new_item;
 }
 
+t_list *delete_first(t_list *head)
+{
+	t_list *tmp;
+
+	if(head == NULL || head == NULL) 
+		return (head);
+
+	tmp = head;
+	head = head->next;
+	free(tmp);
+	return (head);
+}
+
 int	ft_strlen(char *str)
 {
 	int	i;
@@ -151,9 +164,11 @@ void sub_infinite(t_list **data, char *str1, char *str2)
 		}
 		else
 			carry = 0;
-		if (len1 >= 0 && carry)
+		// if (len1 >= 0 && carry)
 			add_front(data, lstnew(sub % 10 + '0'));
 	}
+	while ((*data)->data == '0')
+		*data = (*data)->next;
 	if (large_neg)
 		add_front(data, lstnew('-'));
 }
