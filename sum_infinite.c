@@ -21,7 +21,7 @@ t_list	*lstnew(char data)
 	return (head);
 }
 
-void add_front(t_list **lst, t_list *new_item)
+void	add_front(t_list **lst, t_list *new_item)
 {
 	if (!lst)
 	{
@@ -32,7 +32,7 @@ void add_front(t_list **lst, t_list *new_item)
 	*lst = new_item;
 }
 
-t_list *delete_first(t_list *head)
+t_list	*delete_first(t_list *head)
 {
 	t_list *tmp;
 
@@ -56,14 +56,14 @@ int	ft_strlen(char *str)
 	return (i);
 }
 
-void swap(char **str1, char **str2)
+void	swap(char **str1, char **str2)
 {
 	char *temp = *str1;
 	*str1 = *str2;
 	*str2 = temp;
 }
 
-void sum_infinite(t_list **data, char *str1, char *str2, bool neg)
+void	sum_infinite(t_list **data, char *str1, char *str2, bool neg)
 {
 	int	n;
 	int	carry = 0;
@@ -98,7 +98,7 @@ void sum_infinite(t_list **data, char *str1, char *str2, bool neg)
 		add_front(data, lstnew('-'));
 }
 
-void order_strings(char **str1, char **str2)
+void	order_strings(char **str1, char **str2)
 {
 	bool	s1_bigger = true;
 
@@ -141,35 +141,34 @@ void order_strings(char **str1, char **str2)
 	}
 }
 
-void sub_infinite(t_list **data, char *str1, char *str2)
+void	sub_infinite(t_list **data, char *str1, char *str2)
 {
 	order_strings(&str1, &str2);
 	bool large_neg = str2[0] == '-' ? true : false;
 
-	int len1 = ft_strlen(str2) - 1;
-	int len2 = ft_strlen(str1) - 1;
-	int carry = 0;
-	
-	while (len1 >= 0 || len2 >= 0) 
+	int	len1 = ft_strlen(str2) - 1;
+	int	len2 = ft_strlen(str1) - 1;
+	int	carry = 0;
+
+	while (len1 >= 0 || len2 >= 0)
 	{
 		if (str2[len1] == '-' || str1[len2] == '-')
 			break ;
 		int num1 = (len1 >= 0) ? (str2[len1--] - '0') : 0;
 		int num2 = (len2 >= 0) ? (str1[len2--] - '0') : 0;
 		int sub = num1 - num2 - carry;
-		if (sub < 0) 
+		if (sub < 0)
 		{
 			sub += 10;
 			carry = 1;
 		}
 		else
 			carry = 0;
-		// if (len1 >= 0 && carry)
-			add_front(data, lstnew(sub % 10 + '0'));
+		add_front(data, lstnew(sub % 10 + '0'));
 	}
-	while ((*data)->data == '0')
+	while ((*data)->data == '0' && (*data)->next)
 		*data = (*data)->next;
-	if (large_neg)
+	if (large_neg && (*data)->data != '0')
 		add_front(data, lstnew('-'));
 }
 
@@ -191,7 +190,7 @@ void	determine_type(t_list **data, char *str1, char *str2)
 		sub_infinite(data, str1, str2);
 }
 
-int main(int argc, char *argv[])
+int	main(int argc, char *argv[])
 {
 	t_list	*data = NULL;
 	if (argc != 3)
