@@ -32,17 +32,16 @@ void	add_front(t_list **lst, t_list *new_item)
 	*lst = new_item;
 }
 
-t_list	*delete_first(t_list *head)
+void	delete_first(t_list **head)
 {
-	t_list *tmp;
+	t_list	*tmp;
 
-	if(head == NULL || head == NULL) 
-		return (head);
+	if (head == NULL || *head == NULL)
+		return ;
 
-	tmp = head;
-	head = head->next;
+	tmp = *head;
+	*head = (*head)->next;
 	free(tmp);
-	return (head);
 }
 
 int	ft_strlen(char *str)
@@ -69,7 +68,7 @@ void	sum_infinite(t_list **data, char *str1, char *str2, bool neg)
 	int	carry = 0;
 	int	dif;
 	int	len1 = ft_strlen(str1);
-	int len2 = ft_strlen(str2);
+	int	len2 = ft_strlen(str2);
 
 
 	if (len1 > len2)
@@ -124,12 +123,12 @@ void	order_strings(char **str1, char **str2)
 			if (str1t[i] < str2t[j])
 			{
 				s1_bigger = false;
-				break;
+				break ;
 			}
 			else if (str2t[j] < str1t[i])
 			{
 				s1_bigger = true;
-				break;
+				break ;
 			}
 			i++;
 			j++;
@@ -167,7 +166,7 @@ void	sub_infinite(t_list **data, char *str1, char *str2)
 		add_front(data, lstnew(sub % 10 + '0'));
 	}
 	while ((*data)->data == '0' && (*data)->next)
-		*data = (*data)->next;
+		delete_first(data);
 	if (large_neg && (*data)->data != '0')
 		add_front(data, lstnew('-'));
 }
@@ -181,7 +180,7 @@ void	determine_type(t_list **data, char *str1, char *str2)
 		neg1 = true;
 	if (str2[0] == '-')
 		neg2 = true;
-	
+
 	if (!neg1 && !neg2)
 		sum_infinite(data, str1, str2, false);
 	else if (neg1 && neg2)
