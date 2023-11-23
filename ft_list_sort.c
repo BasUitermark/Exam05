@@ -1,3 +1,9 @@
+void swapData(t_list *a, t_list *b) {
+    int temp = a->data;
+    a->data = b->data;
+    b->data = temp;
+}
+
 void selectionSort(t_list *head) {
     t_list *current = head;
     while (current) {
